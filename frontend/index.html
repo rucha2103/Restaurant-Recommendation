@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palate - AI Restaurant Recommendations</title>
+    <meta name="description" content="Discover restaurants powered by AI constraints and narratives.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="container">
+        <div class="top-grid">
+            <section class="hero-section">
+                <div class="brand-pill">
+                    <span class="brand-icon">✦</span>
+                    <span>Palate</span>
+                </div>
+                <h1 class="hero-title">
+                    Discover <span>your next</span>
+                    <em>favorite meal.</em>
+                </h1>
+                <p class="hero-subtitle">
+                    AI-curated restaurant picks, tailored to your taste, mood, and moment.
+                </p>
+
+                <h3 class="hero-trending-title">Trending in India</h3>
+                <div class="hero-cards">
+                    <article class="trend-card">
+                        <div class="trend-badge">Chef's Pick</div>
+                        <h4>Masala Library</h4>
+                        <p>Contemporary</p>
+                        <div class="trend-meta">★ 4.6 · BKC, Mumbai</div>
+                    </article>
+                    <article class="trend-card">
+                        <div class="trend-badge">Heritage</div>
+                        <h4>Karavalli</h4>
+                        <p>South Indian</p>
+                        <div class="trend-meta">★ 4.7 · Residency Rd, Bangalore</div>
+                    </article>
+                    <article class="trend-card">
+                        <div class="trend-badge">Legendary</div>
+                        <h4>Peter Cat</h4>
+                        <p>Continental</p>
+                        <div class="trend-meta">★ 4.5 · Park St, Kolkata</div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="form-shell">
+                <div class="form-header">
+                    <h2>What sounds good?</h2>
+                    <p>Tell us what you're in the mood for.</p>
+                </div>
+                <form id="preference-form">
+                    <div class="form-group">
+                        <label for="location">Location in Bangalore *</label>
+                        <div class="input-wrap">
+                            <span class="input-icon">📍</span>
+                            <input type="text" id="location" name="location" placeholder="Neighborhood or address..." required autocomplete="off" list="location-list">
+                        </div>
+                        <datalist id="location-list"></datalist>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cuisine">Cuisine *</label>
+                        <div class="input-wrap">
+                            <span class="input-icon">🍽️</span>
+                            <select id="cuisine" name="cuisine" required>
+                                <option value="">Choose a cuisine</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="slider-header">
+                            <label for="budget_per_person">Budget per person</label>
+                            <span id="budget-val">₹2k</span>
+                        </div>
+                        <input type="range" id="budget_per_person" min="100" max="10000" step="100" value="2000">
+                    </div>
+
+                    <div class="form-group">
+                        <div class="slider-header">
+                            <label for="minimum_rating">Minimum rating</label>
+                            <span id="rating-val">3.5</span>
+                        </div>
+                        <input type="range" id="minimum_rating" name="minimum_rating" min="0" max="5" step="0.1" value="3.5">
+                        <label class="checkbox-row" for="include_unrated">
+                            <input type="checkbox" id="include_unrated" name="include_unrated">
+                            <span>Include unrated hidden gems</span>
+                        </label>
+                    </div>
+
+                    <button type="button" id="toggle-more" class="ghost-toggle">⌃ Less options</button>
+
+                    <div id="more-options">
+                        <div class="form-group">
+                            <label>Dining vibe</label>
+                            <div class="chip-grid">
+                                <button type="button" class="vibe-chip" data-vibe="Casual">🍔 Casual</button>
+                                <button type="button" class="vibe-chip" data-vibe="Fine Dining">🥂 Fine Dining</button>
+                                <button type="button" class="vibe-chip" data-vibe="Cafe">☕ Cafe</button>
+                                <button type="button" class="vibe-chip" data-vibe="Street Food">🌮 Street Food</button>
+                                <button type="button" class="vibe-chip" data-vibe="Family">👨‍👩‍👧‍👦 Family</button>
+                                <button type="button" class="vibe-chip" data-vibe="Date Night">🕯️ Date Night</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="party_size">Party size</label>
+                            <div class="input-wrap">
+                                <span class="input-icon">👥</span>
+                                <input type="number" id="party_size" min="1" max="20" placeholder="How many guests?">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="additional_preferences">Anything else?</label>
+                            <textarea id="additional_preferences" name="additional_preferences" rows="3" placeholder="Dietary restrictions, outdoor seating, live music..."></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submit-btn" class="btn primary-btn">
+                        <span class="btn-text">Find My Perfect Spot</span>
+                        <div class="spinner hidden"></div>
+                    </button>
+                </form>
+            </section>
+        </div>
+
+        <section class="results-container">
+                <div id="results-meta" class="hidden">
+                    <div class="summary-box">
+                        <h3 id="summary-title">Summary</h3>
+                        <p id="summary-text"></p>
+                    </div>
+                </div>
+
+                <div id="relaxations-banner" class="banner hidden">
+                    <strong>Relaxed constraints applied: </strong>
+                    <span id="relaxations-text"></span>
+                </div>
+
+                <div id="results-list" class="results-list">
+                    <div class="empty-state">
+                        <div class="icon">🍽️</div>
+                        <p>Fill out your preferences to see AI recommendations</p>
+                    </div>
+                </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

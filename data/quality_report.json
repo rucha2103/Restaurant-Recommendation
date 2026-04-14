@@ -1,0 +1,222 @@
+{
+  "run_id": "8d1304c467e5ae062a26685c9af406731052b9da",
+  "dataset_id": "ManikaSaini/zomato-restaurant-recommendation",
+  "dataset_revision": null,
+  "split": "train",
+  "started_at": "2026-04-07T15:13:09+00:00",
+  "finished_at": "2026-04-07T15:14:11+00:00",
+  "ingested_count": 51717,
+  "quality_report": {
+    "total_restaurants": 51717,
+    "null_rates": {
+      "city": 0.00040605603573293117,
+      "rating": 0.19436548910416304,
+      "avg_cost_for_two": 0.00669025658874258,
+      "cuisines": 0.0008701200765705668
+    },
+    "top_cities": [
+      {
+        "city": "BTM",
+        "count": 5124
+      },
+      {
+        "city": "HSR",
+        "count": 2523
+      },
+      {
+        "city": "Koramangala 5th Block",
+        "count": 2504
+      },
+      {
+        "city": "JP Nagar",
+        "count": 2235
+      },
+      {
+        "city": "Whitefield",
+        "count": 2144
+      },
+      {
+        "city": "Indiranagar",
+        "count": 2083
+      },
+      {
+        "city": "Jayanagar",
+        "count": 1926
+      },
+      {
+        "city": "Marathahalli",
+        "count": 1846
+      },
+      {
+        "city": "Bannerghatta Road",
+        "count": 1630
+      },
+      {
+        "city": "Bellandur",
+        "count": 1286
+      },
+      {
+        "city": "Electronic City",
+        "count": 1258
+      },
+      {
+        "city": "Koramangala 1st Block",
+        "count": 1238
+      },
+      {
+        "city": "Brigade Road",
+        "count": 1218
+      },
+      {
+        "city": "Koramangala 7th Block",
+        "count": 1181
+      },
+      {
+        "city": "Koramangala 6th Block",
+        "count": 1156
+      },
+      {
+        "city": "Sarjapur Road",
+        "count": 1065
+      },
+      {
+        "city": "Ulsoor",
+        "count": 1023
+      },
+      {
+        "city": "Koramangala 4th Block",
+        "count": 1017
+      },
+      {
+        "city": "MG Road",
+        "count": 918
+      },
+      {
+        "city": "Banashankari",
+        "count": 906
+      }
+    ],
+    "top_cuisines": [
+      {
+        "cuisine": "North Indian",
+        "count": 21085
+      },
+      {
+        "cuisine": "Chinese",
+        "count": 15547
+      },
+      {
+        "cuisine": "South Indian",
+        "count": 8644
+      },
+      {
+        "cuisine": "Fast Food",
+        "count": 8092
+      },
+      {
+        "cuisine": "Biryani",
+        "count": 6492
+      },
+      {
+        "cuisine": "Continental",
+        "count": 5765
+      },
+      {
+        "cuisine": "Desserts",
+        "count": 5633
+      },
+      {
+        "cuisine": "Cafe",
+        "count": 5303
+      },
+      {
+        "cuisine": "Beverages",
+        "count": 4747
+      },
+      {
+        "cuisine": "Italian",
+        "count": 3389
+      },
+      {
+        "cuisine": "Bakery",
+        "count": 2840
+      },
+      {
+        "cuisine": "Street Food",
+        "count": 2595
+      },
+      {
+        "cuisine": "Pizza",
+        "count": 2073
+      },
+      {
+        "cuisine": "Burger",
+        "count": 2009
+      },
+      {
+        "cuisine": "Seafood",
+        "count": 1810
+      },
+      {
+        "cuisine": "Ice Cream",
+        "count": 1769
+      },
+      {
+        "cuisine": "Andhra",
+        "count": 1760
+      },
+      {
+        "cuisine": "Mughlai",
+        "count": 1570
+      },
+      {
+        "cuisine": "Rolls",
+        "count": 1470
+      },
+      {
+        "cuisine": "American",
+        "count": 1461
+      },
+      {
+        "cuisine": "Kerala",
+        "count": 1454
+      },
+      {
+        "cuisine": "Asian",
+        "count": 1295
+      },
+      {
+        "cuisine": "Momos",
+        "count": 1276
+      },
+      {
+        "cuisine": "Finger Food",
+        "count": 1219
+      },
+      {
+        "cuisine": "Juices",
+        "count": 1144
+      },
+      {
+        "cuisine": "Salad",
+        "count": 1138
+      },
+      {
+        "cuisine": "Arabian",
+        "count": 1099
+      },
+      {
+        "cuisine": "Kebab",
+        "count": 1036
+      },
+      {
+        "cuisine": "Mithai",
+        "count": 1027
+      },
+      {
+        "cuisine": "Thai",
+        "count": 1000
+      }
+    ]
+  }
+}

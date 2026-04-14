@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  recommender-api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - ENV_FILE=.env
+    volumes:
+      # Optional: Mount data directory for persistent SQLite across container rebuilds if necessary.
+      - ./data:/app/data
+    restart: unless-stopped
