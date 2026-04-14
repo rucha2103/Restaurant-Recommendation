@@ -5,3 +5,5 @@ __pycache__/
 .env
 data/hf_cache/
 
+data/data/restaurants.sqlite
+data/restaurants.sqlite
