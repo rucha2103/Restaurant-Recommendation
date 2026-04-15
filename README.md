@@ -63,3 +63,46 @@ curl -s -X POST "http://127.0.0.1:8000/recommendations" \
 - `docs/phase2.md`: Phase 2 deterministic recommender
 - `docs/phase3.md`: Phase 3 Groq-constrained reranking
 
+## Deployment: Vercel frontend + Streamlit frontend
+
+This repo now supports two independent frontend deployments that consume the same backend API:
+
+- `frontend/`: static web UI (deploy to Vercel)
+- `streamlit_app.py`: Streamlit UI (deploy to Streamlit Community Cloud)
+
+### 1) Deploy backend API first
+
+Deploy the FastAPI backend (`backend.app:app`) on any Python host, then note the public URL, for example:
+
+`https://your-backend.example.com`
+
+Set backend env vars:
+
+- `GROQ_API_KEY`
+- `RESTAURANTS_DB_PATH`
+- `CORS_ALLOW_ORIGINS=https://your-vercel-app.vercel.app,https://your-streamlit-app.streamlit.app`
+
+### 2) Deploy static frontend on Vercel
+
+The root includes `vercel.json` that serves files from `frontend/`.
+
+Before deploy, set API URL in `frontend/config.js`:
+
+```js
+window.__API_BASE_URL__ = "https://your-backend.example.com";
+```
+
+Then import repo to Vercel and deploy.
+
+### 3) Deploy Streamlit frontend on Streamlit Community Cloud
+
+Use `streamlit_app.py` as the app entrypoint.
+
+Set Streamlit secret:
+
+```toml
+API_BASE_URL = "https://your-backend.example.com"
+```
+
+The Streamlit app reads `API_BASE_URL` from Streamlit secrets first, then environment variables.
+

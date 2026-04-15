@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const apiBaseUrl = (window.__API_BASE_URL__ || '').replace(/\/+$/, '');
+    const apiUrl = (path) => (apiBaseUrl ? `${apiBaseUrl}${path}` : path);
+
     const form = document.getElementById('preference-form');
     const submitBtn = document.getElementById('submit-btn');
     const btnText = submitBtn.querySelector('.btn-text');
@@ -55,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fetch initial metadata for autocomplete
     async function fetchMetadata() {
         try {
-            const res = await fetch('/metadata');
+            const res = await fetch(apiUrl('/metadata'));
             if (res.ok) {
                 const data = await res.json();
                 
@@ -154,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const res = await fetch('/recommendations', {
+            const res = await fetch(apiUrl('/recommendations'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)

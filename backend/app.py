@@ -6,6 +6,7 @@ from typing import Any, Dict
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from backend.models import Preferences, RecommendationsResponse, ResponseMetadata
 from backend.phase2_recommender import DEFAULT_DB_PATH, metadata_from_db
@@ -26,6 +27,21 @@ app = FastAPI(
     version="0.1.0",
     description="Phases 0–4: contracts + caching + observability + Groq-constrained reranking.",
 )
+
+# CORS for split deployments (e.g. Vercel frontend / Streamlit frontend).
+cors_origins = [
+    origin.strip()
+    for origin in os.environ.get("CORS_ALLOW_ORIGINS", "").split(",")
+    if origin.strip()
+]
+if cors_origins:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=cors_origins,
+        allow_credentials=False,
+        allow_methods=["GET", "POST", "OPTIONS"],
+        allow_headers=["*"],
+    )
 
 
 @app.get("/healthz")
