@@ -1,104 +1,72 @@
-# AI-Powered Restaurant Recommendation System
+# Restaurant Recommendation System
 
-This repo is being built phase-by-phase from `docs/architecture.md`.
+Architecture:
 
-## Phase 0 (implemented)
+- `backend/streamlit_backend.py`: Streamlit app acting as backend-style API via query params.
+- `frontend/`: Next.js frontend (deployable on Vercel) calling the Streamlit backend over HTTP.
 
-- **API contract is defined and enforced** via typed request/response models.
-- **Guardrails are codified** (deterministic constraints first, LLM constrained to candidate set, validation + fallback).
-- **Success metrics are defined** (constraint satisfaction, faithfulness, latency/cost) with a place to emit them in `metadata`.
+## Backend (Streamlit)
 
-## Quickstart (backend)
+The Streamlit backend supports API-like endpoints:
+
+- `/?endpoint=metadata`
+- `/?endpoint=recommendations&location=...&budget=...&cuisine=...`
+
+Run locally:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-uvicorn backend.app:app --reload
+streamlit run backend/streamlit_backend.py
 ```
 
-Then open the interactive docs at `http://127.0.0.1:8000/docs`.
+## Frontend (Next.js)
 
-### Environment (.env)
-
-The API auto-loads environment variables from `.env` at startup (or `ENV_FILE=...`).
-Copy `.env.example` → `.env` and set `GROQ_API_KEY` to enable Phase 3.
-
-## Phase 1 (data ingestion)
-
-Ingest the Hugging Face Zomato dataset into a canonical SQLite DB and write a quality report:
+Setup:
 
 ```bash
-./.venv/bin/pip install -r requirements.txt
-./.venv/bin/python backend/ingest_zomato.py --db data/restaurants.sqlite --report-out data/quality_report.json
+cd frontend
+npm install
+cp .env.example .env.local
 ```
 
-## Phase 2 (deterministic recommender)
+Set `NEXT_PUBLIC_API_BASE_URL` in `frontend/.env.local` to your deployed Streamlit app URL:
 
-Start the API (uses `data/restaurants.sqlite` by default):
+```env
+NEXT_PUBLIC_API_BASE_URL=https://your-streamlit-app.streamlit.app
+```
+
+Run locally:
 
 ```bash
-./.venv/bin/uvicorn backend.app:app --reload
+npm run dev
 ```
 
-Example request:
+## Deployment
 
-```bash
-curl -s -X POST "http://127.0.0.1:8000/recommendations" \
-  -H "Content-Type: application/json" \
-  -d '{ "location":"BTM","budget":"medium","cuisine":"Chinese","minimum_rating":0,"top_n":5,"include_unrated":true }'
-```
+### Deploy backend on Streamlit Community Cloud
 
-## Phase 3–4 (Groq + caching/observability)
+1. Connect GitHub repo on [Streamlit Community Cloud](https://share.streamlit.io/).
+2. App file path: `backend/streamlit_backend.py`
+3. Add secrets/env values if needed:
+   - `GROQ_API_KEY`
+   - `RESTAURANTS_DB_PATH` (optional, defaults to `data/restaurants.sqlite`)
 
-- Set `GROQ_API_KEY` in `.env` to enable Groq reranking.
-- `GET /readyz` shows readiness (`db_ok`, `groq_key_present`).
-- Repeat the same `/recommendations` request to see `metadata.cache_hit=true`.
+### Deploy frontend on Vercel
+
+1. Import the same repo on [Vercel](https://vercel.com/).
+2. Set project root to `frontend`.
+3. Add env var:
+   - `NEXT_PUBLIC_API_BASE_URL=https://your-streamlit-app.streamlit.app`
+4. Deploy.
 
 ## Docs
 
-- `docs/architecture.md`: phase-wise plan
-- `docs/phase0.md`: Phase 0 scope, guardrails, metrics, and contracts
-- `docs/phase1.md`: Phase 1 ingestion + canonical store
-- `docs/phase2.md`: Phase 2 deterministic recommender
-- `docs/phase3.md`: Phase 3 Groq-constrained reranking
-
-## Deployment: Vercel frontend + Streamlit frontend
-
-This repo supports two frontend options:
-
-- `frontend/`: static web UI (deploy to Vercel)
-- `app.py`: self-contained Streamlit UI (no external API required)
-
-### 1) Deploy backend API first
-
-Deploy the FastAPI backend (`backend.app:app`) on any Python host, then note the public URL, for example:
-
-`https://your-backend.example.com`
-
-Set backend env vars:
-
-- `GROQ_API_KEY`
-- `RESTAURANTS_DB_PATH`
-- `CORS_ALLOW_ORIGINS=https://your-vercel-app.vercel.app,https://your-streamlit-app.streamlit.app`
-
-### 2) Deploy static frontend on Vercel
-
-The root includes `vercel.json` that serves files from `frontend/`.
-
-Before deploy, set API URL in `frontend/config.js`:
-
-```js
-window.__API_BASE_URL__ = "https://your-backend.example.com";
-```
-
-Then import repo to Vercel and deploy.
-
-### 3) Run or deploy self-contained Streamlit app
-
-The Streamlit app executes recommendation logic directly in-process.
-
-```bash
-streamlit run app.py
-```
+- `docs/architecture.md`
+- `docs/phase0.md`
+- `docs/phase1.md`
+- `docs/phase2.md`
+- `docs/phase3.md`
+- `docs/phase7.md`
 
