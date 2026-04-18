@@ -65,10 +65,10 @@ curl -s -X POST "http://127.0.0.1:8000/recommendations" \
 
 ## Deployment: Vercel frontend + Streamlit frontend
 
-This repo now supports two independent frontend deployments that consume the same backend API:
+This repo supports two frontend options:
 
 - `frontend/`: static web UI (deploy to Vercel)
-- `streamlit_app.py`: Streamlit UI (deploy to Streamlit Community Cloud)
+- `app.py`: self-contained Streamlit UI (no external API required)
 
 ### 1) Deploy backend API first
 
@@ -94,15 +94,11 @@ window.__API_BASE_URL__ = "https://your-backend.example.com";
 
 Then import repo to Vercel and deploy.
 
-### 3) Deploy Streamlit frontend on Streamlit Community Cloud
+### 3) Run or deploy self-contained Streamlit app
 
-Use `streamlit_app.py` as the app entrypoint.
+The Streamlit app executes recommendation logic directly in-process.
 
-Set Streamlit secret:
-
-```toml
-API_BASE_URL = "https://your-backend.example.com"
+```bash
+streamlit run app.py
 ```
-
-The Streamlit app reads `API_BASE_URL` from Streamlit secrets first, then environment variables.
 
