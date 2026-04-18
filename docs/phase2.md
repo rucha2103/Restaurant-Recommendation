@@ -86,7 +86,7 @@ All relaxations are returned in `relaxations_applied[]` so the UI can be transpa
 3) Query recommendations:
 
 ```bash
-curl -s -X POST "http://127.0.0.1:8000/recommendations" \
+curl -s -X POST "${BACKEND_URL}/recommendations" \
   -H "Content-Type: application/json" \
   -d '{
     "location": "BTM",

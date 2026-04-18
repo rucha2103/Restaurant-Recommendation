@@ -43,5 +43,4 @@ Start the application the same way as Phase 4:
 uvicorn backend.app:app --reload
 ```
 
-Then visit the frontend directly in your browser:
-- `http://localhost:8000/`
+Then visit the frontend using your deployed frontend URL.
