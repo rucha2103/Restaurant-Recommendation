@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palate - Local Test</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #fecfef 75%, #fecfef 100%);
+            min-height: 100vh;
+            color: #1a202c;
+            line-height: 1.6;
+        }
+
+        .hero-section {
+            padding: 4rem 2rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(45deg, #fff, #ffd89b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.95;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .form-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin: -3rem auto 3rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .form-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1a202c;
+        }
+
+        .form-subtitle {
+            color: #718096;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #4a5568;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .select-field, .input-field, .textarea-field {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .select-field:focus, .input-field:focus, .textarea-field:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .budget-container {
+            margin-bottom: 2rem;
+        }
+
+        .budget-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #4a5568;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .budget-value {
+            color: #667eea;
+            font-size: 1.1rem;
+        }
+
+        .slider-container {
+            position: relative;
+            padding: 0 1rem;
+        }
+
+        .budget-slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        .budget-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .budget-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .budget-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .budget-slider::-moz-range-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .budget-fill {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            transform: translateY(-50%);
+            pointer-events: none;
+            transition: width 0.2s ease;
+        }
+
+        .budget-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: #718096;
+        }
+
+        .button-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 700;
+            padding: 1.25rem 3rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-align: center;
+        }
+
+        .button-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .button-primary:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .results-section {
+            margin-top: 3rem;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .results-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .results-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+        }
+
+        .restaurant-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 2rem;
+        }
+
+        .restaurant-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .restaurant-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+        }
+
+        .restaurant-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #1a202c;
+        }
+
+        .restaurant-location {
+            color: #718096;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .restaurant-cuisines {
+            color: #4a5568;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .restaurant-details {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .rating {
+            color: #f6ad55;
+            font-weight: 600;
+        }
+
+        .cost {
+            color: #48bb78;
+            font-weight: 600;
+        }
+
+        .restaurant-why {
+            background: linear-gradient(135deg, #fef5e7, #fed7aa);
+            border-left: 4px solid #f6ad55;
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+            color: #744210;
+            margin-top: 1rem;
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, #fed7d7, #feb2b2);
+            border: 1px solid #fc8181;
+            color: #742a2a;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            font-weight: 500;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(252, 129, 129, 0.2);
+        }
+
+        .loading-message {
+            background: linear-gradient(135deg, #fef5e7, #fed7aa);
+            border: 1px solid #f6ad55;
+            color: #744210;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            font-weight: 500;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(246, 173, 85, 0.2);
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(116, 66, 16, 0.3);
+            border-radius: 50%;
+            border-top-color: #744210;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .form-section {
+                margin: -1rem 1rem 2rem;
+                padding: 1.5rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .restaurant-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .results-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">🍽️ Palate</h1>
+            <p class="hero-subtitle">Discover Your Perfect Dining Experience</p>
+            <p class="hero-subtitle">AI-Powered Restaurant Recommendations Tailored Just for You</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Form Card -->
+        <div class="form-section">
+            <h2 class="form-title">Find Your Perfect Restaurant</h2>
+            <p class="form-subtitle">Tell us your preferences and let our AI recommend the best dining spots</p>
+            
+            <form id="recommendation-form">
+                <div class="form-grid">
+                    <!-- Location -->
+                    <div class="form-group">
+                        <label for="location" class="form-label">📍 Location</label>
+                        <select id="location" class="select-field" required>
+                            <option value="">Select a location</option>
+                            <option value="BTM Layout">BTM Layout</option>
+                            <option value="Koramangala">Koramangala</option>
+                            <option value="Indiranagar">Indiranagar</option>
+                            <option value="Jayanagar">Jayanagar</option>
+                            <option value="Whitefield">Whitefield</option>
+                            <option value="HSR Layout">HSR Layout</option>
+                            <option value="Marathahalli">Marathahalli</option>
+                            <option value="Electronic City">Electronic City</option>
+                            <option value="Bannerghatta Road">Bannerghatta Road</option>
+                            <option value="MG Road">MG Road</option>
+                            <option value="Brigade Road">Brigade Road</option>
+                            <option value="Church Street">Church Street</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Cuisine -->
+                    <div class="form-group">
+                        <label for="cuisine" class="form-label">🍜 Cuisine</label>
+                        <select id="cuisine" class="select-field" required>
+                            <option value="">Select a cuisine</option>
+                            <option value="Chinese">Chinese</option>
+                            <option value="Italian">Italian</option>
+                            <option value="Indian">Indian</option>
+                            <option value="Mexican">Mexican</option>
+                            <option value="Thai">Thai</option>
+                            <option value="Japanese">Japanese</option>
+                            <option value="Continental">Continental</option>
+                            <option value="South Indian">South Indian</option>
+                            <option value="North Indian">North Indian</option>
+                            <option value="Mughlai">Mughlai</option>
+                            <option value="Cafe">Cafe</option>
+                            <option value="Fast Food">Fast Food</option>
+                            <option value="Biryani">Biryani</option>
+                            <option value="Pizza">Pizza</option>
+                            <option value="Burger">Burger</option>
+                            <option value="Desserts">Desserts</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Budget Slider -->
+                <div class="budget-container">
+                    <label class="budget-label">
+                        💰 Budget: <span class="budget-value" id="budget-value">💰 Moderate</span>
+                    </label>
+                    <div class="slider-container">
+                        <input type="range" id="budget-slider" class="budget-slider" min="0" max="2" value="1">
+                        <div class="budget-fill" id="budget-fill" style="width: 50%"></div>
+                    </div>
+                    <div class="budget-labels">
+                        <span>💸 Budget</span>
+                        <span>💰 Moderate</span>
+                        <span>💎 Premium</span>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                    <!-- Rating -->
+                    <div>
+                        <label class="form-label">⭐ Minimum Rating</label>
+                        <input type="range" id="rating-slider" min="0" max="5" step="0.1" value="3.5" style="width: 100%; height: 8px; border-radius: 4px; background: #e2e8f0; outline: none; -webkit-appearance: none; cursor: pointer;">
+                        <div style="text-align: center; margin-top: 0.5rem; font-size: 1.1rem; font-weight: 600; color: #667eea;">
+                            <span id="rating-value">3.5</span> / 5.0
+                        </div>
+                    </div>
+                    
+                    <!-- Number of Recommendations -->
+                    <div>
+                        <label class="form-label">🔢 Number of Results</label>
+                        <input type="range" id="results-slider" min="1" max="10" value="5" style="width: 100%; height: 8px; border-radius: 4px; background: #e2e8f0; outline: none; -webkit-appearance: none; cursor: pointer;">
+                        <div style="text-align: center; margin-top: 0.5rem; font-size: 1.1rem; font-weight: 600; color: #667eea;">
+                            <span id="results-value">5</span> restaurants
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Preferences -->
+                <div style="margin-bottom: 2rem;">
+                    <label class="form-label">💭 Additional Preferences</label>
+                    <textarea id="preferences" class="textarea-field" rows="3" placeholder="E.g., outdoor seating, vegetarian options, quiet atmosphere, romantic ambiance..."></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <div style="text-align: center;">
+                    <button type="submit" class="button-primary" id="submit-btn">
+                        🔍 Get Recommendations
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Error/Loading Messages -->
+        <div id="error-message" class="error-message" style="display: none;">
+            ⚠️ <span id="error-text"></span>
+        </div>
+        
+        <div id="loading-message" class="loading-message" style="display: none;">
+            <span class="loading-spinner"></span>
+            Our AI is analyzing your preferences and finding the best restaurants...
+        </div>
+
+        <!-- Results Section -->
+        <div id="results-section" class="results-section" style="display: none;">
+            <div class="results-header">
+                <h2 class="results-title">🍽️ Recommended Restaurants</h2>
+                <p class="results-subtitle" id="results-summary">Here are your personalized recommendations</p>
+            </div>
+            
+            <div class="restaurant-grid" id="restaurant-grid">
+                <!-- Results will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Budget slider functionality
+        const budgetSlider = document.getElementById('budget-slider');
+        const budgetValue = document.getElementById('budget-value');
+        const budgetFill = document.getElementById('budget-fill');
+        const budgetLabels = ['💸 Budget Friendly', '💰 Moderate', '💎 Fine Dining'];
+        const budgetValues = ['low', 'medium', 'high'];
+
+        budgetSlider.addEventListener('input', function() {
+            const value = parseInt(this.value);
+            budgetValue.textContent = budgetLabels[value];
+            budgetFill.style.width = `${(value / 2) * 100}%`;
+        });
+
+        // Rating slider functionality
+        const ratingSlider = document.getElementById('rating-slider');
+        const ratingValue = document.getElementById('rating-value');
+
+        ratingSlider.addEventListener('input', function() {
+            ratingValue.textContent = parseFloat(this.value).toFixed(1);
+        });
+
+        // Results slider functionality
+        const resultsSlider = document.getElementById('results-slider');
+        const resultsValue = document.getElementById('results-value');
+
+        resultsSlider.addEventListener('input', function() {
+            resultsValue.textContent = this.value;
+        });
+
+        // Form submission
+        const form = document.getElementById('recommendation-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const errorMessage = document.getElementById('error-message');
+        const errorText = document.getElementById('error-text');
+        const loadingMessage = document.getElementById('loading-message');
+        const resultsSection = document.getElementById('results-section');
+        const restaurantGrid = document.getElementById('restaurant-grid');
+        const resultsSummary = document.getElementById('results-summary');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const location = document.getElementById('location').value;
+            const cuisine = document.getElementById('cuisine').value;
+            const budget = budgetValues[budgetSlider.value];
+            const rating = ratingSlider.value;
+            const resultsCount = resultsSlider.value;
+            const preferences = document.getElementById('preferences').value;
+
+            // Validation
+            if (!location || !cuisine) {
+                showError('Please select both location and cuisine');
+                return;
+            }
+
+            // Show loading
+            hideError();
+            hideResults();
+            showLoading();
+
+            // Simulate API call (since we're testing locally)
+            setTimeout(function() {
+                hideLoading();
+                showResults();
+                
+                // Demo results
+                const demoResults = [
+                    {
+                        name: "Demo Restaurant 1",
+                        location: location,
+                        cuisines: [cuisine, "Asian"],
+                        rating: 4.2,
+                        estimated_cost: 800,
+                        currency: "₹",
+                        why: "Great ambiance and excellent service with authentic " + cuisine + " cuisine."
+                    },
+                    {
+                        name: "Demo Restaurant 2", 
+                        location: location,
+                        cuisines: [cuisine, "Continental"],
+                        rating: 4.5,
+                        estimated_cost: 1200,
+                        currency: "₹",
+                        why: "Premium dining experience with fusion " + cuisine + " dishes."
+                    },
+                    {
+                        name: "Demo Restaurant 3",
+                        location: location,
+                        cuisines: [cuisine, "Local"],
+                        rating: 4.0,
+                        estimated_cost: 600,
+                        currency: "₹",
+                        why: "Budget-friendly option with delicious " + cuisine + " specialties."
+                    }
+                ];
+
+                displayResults(demoResults.slice(0, parseInt(resultsCount)));
+                resultsSummary.textContent = `Found ${parseInt(resultsCount)} amazing ${cuisine} restaurants in ${location} for your ${budget} budget!`;
+            }, 2000);
+        });
+
+        function showError(message) {
+            errorText.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+
+        function hideError() {
+            errorMessage.style.display = 'none';
+        }
+
+        function showLoading() {
+            loadingMessage.style.display = 'block';
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="loading-spinner"></span> Finding Perfect Matches...';
+        }
+
+        function hideLoading() {
+            loadingMessage.style.display = 'none';
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '🔍 Get Recommendations';
+        }
+
+        function showResults() {
+            resultsSection.style.display = 'block';
+        }
+
+        function hideResults() {
+            resultsSection.style.display = 'none';
+        }
+
+        function displayResults(results) {
+            restaurantGrid.innerHTML = '';
+            
+            results.forEach((restaurant, index) => {
+                const card = document.createElement('div');
+                card.className = 'restaurant-card';
+                card.innerHTML = `
+                    <h3 class="restaurant-name">${restaurant.name}</h3>
+                    <div class="restaurant-location">
+                        📍 ${restaurant.location}
+                    </div>
+                    <div class="restaurant-cuisines">
+                        🍽️ ${restaurant.cuisines.join(" • ")}
+                    </div>
+                    
+                    <div class="restaurant-details">
+                        <div class="detail-item rating">
+                            <span style="color: #f6ad55; font-size: 1.2rem;">⭐</span>
+                            <span style="font-weight: 600; color: #f6ad55;">
+                                ${restaurant.rating}/5
+                            </span>
+                        </div>
+                        <div class="detail-item cost">
+                            <span style="color: #48bb78; font-size: 1.2rem;">💰</span>
+                            <span style="font-weight: 600; color: #48bb78;">
+                                ${restaurant.currency || "₹"}${restaurant.estimated_cost} for two
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="restaurant-why">
+                        <strong>💡 Why we recommend:</strong> ${restaurant.why}
+                    </div>
+                `;
+                restaurantGrid.appendChild(card);
+            });
+        }
+
+        // Initialize
+        console.log('Palate Local Test - Ready!');
+        console.log('✅ Dropdowns are populated with hardcoded data');
+        console.log('✅ Budget slider is functional');
+        console.log('✅ All interactive elements are working');
+    </script>
+</body>
+</html>
