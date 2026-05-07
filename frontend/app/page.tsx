@@ -489,14 +489,16 @@ export default function HomePage() {
                 }}
                 onMouseOver={(e) => {
                   if (!loading) {
-                    e.target.style.transform = 'translateY(-2px)';
-                    e.target.style.boxShadow = '0 15px 35px rgba(102, 126, 234, 0.4)';
+                    const target = e.target as HTMLButtonElement;
+                    target.style.transform = 'translateY(-2px)';
+                    target.style.boxShadow = '0 15px 35px rgba(102, 126, 234, 0.4)';
                   }
                 }}
                 onMouseOut={(e) => {
                   if (!loading) {
-                    e.target.style.transform = 'translateY(0)';
-                    e.target.style.boxShadow = '0 10px 25px rgba(102, 126, 234, 0.3)';
+                    const target = e.target as HTMLButtonElement;
+                    target.style.transform = 'translateY(0)';
+                    target.style.boxShadow = '0 10px 25px rgba(102, 126, 234, 0.3)';
                   }
                 }}
               >
