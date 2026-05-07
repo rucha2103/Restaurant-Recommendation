@@ -3,5 +3,14 @@
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
-  "outputDirectory": ".next"
+  "outputDirectory": ".next",
+  "git": {
+    "deploymentEnabled": true,
+    "productionBranch": "main"
+  },
+  "build": {
+    "env": {
+      "NEXT_PUBLIC_API_BASE_URL": "https://restaurant-recommendation-c2wzaknlbyvbbt3eanznyw.streamlit.app/"
+    }
+  }
 }
