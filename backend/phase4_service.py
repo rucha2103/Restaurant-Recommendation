@@ -5,9 +5,9 @@ import time
 from dataclasses import dataclass
 from typing import Any, Dict, Optional, Tuple
 
-from backend.models import Preferences
-from backend.phase2_recommender import DEFAULT_DB_PATH
-from backend.phase3_recommender import recommend_phase3
+from models import Preferences
+from phase2_recommender import DEFAULT_DB_PATH
+from phase3_recommender import recommend_phase3
 
 
 def _prefs_cache_key(prefs: Preferences) -> str:

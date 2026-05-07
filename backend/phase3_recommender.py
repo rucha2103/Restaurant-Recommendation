@@ -4,8 +4,8 @@ import re
 import time
 from typing import Any, Dict, List, Optional, Tuple
 
-from backend.models import Preferences, Recommendation, Relaxation
-from backend.phase2_recommender import DEFAULT_DB_PATH, recommend_phase2
+from models import Preferences, Recommendation, Relaxation
+from phase2_recommender import DEFAULT_DB_PATH, recommend_phase2
 
 
 GROQ_MODEL_DEFAULT = "llama-3.1-8b-instant"

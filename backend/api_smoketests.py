@@ -22,7 +22,7 @@ def main() -> None:
         load_dotenv(env_file, override=True)
 
     # Import after dotenv so backend/app.py sees env at import time.
-    from backend.app import app
+    from app import app
 
     client = TestClient(app)
 

@@ -13,9 +13,9 @@ env_path = os.environ.get("ENV_FILE", os.path.join("docs", ".env"))
 if os.path.exists(env_path):
     load_dotenv(env_path, override=True)
 
-from backend.models import Preferences
-from backend.phase4_service import RecommenderService
-from backend.eval_dataset import EVAL_SUITE
+from models import Preferences
+from phase4_service import RecommenderService
+from eval_dataset import EVAL_SUITE
 
 def run_evaluation() -> None:
     print("="*60)

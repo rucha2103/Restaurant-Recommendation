@@ -1,5 +1,5 @@
 from typing import Any, Dict, List
-from backend.models import BudgetBucket
+from models import BudgetBucket
 
 EVAL_SUITE: List[Dict[str, Any]] = [
     {

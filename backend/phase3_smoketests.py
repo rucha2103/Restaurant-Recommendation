@@ -8,8 +8,8 @@ if ROOT not in sys.path:
 
 from dotenv import load_dotenv
 
-from backend.models import BudgetBucket, Preferences
-from backend.phase3_recommender import recommend_phase3
+from models import BudgetBucket, Preferences
+from phase3_recommender import recommend_phase3
 
 
 def _assert(cond: bool, msg: str) -> None:

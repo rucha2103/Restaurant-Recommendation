@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from difflib import get_close_matches
 from typing import Any, Dict, List, Optional, Tuple
 
-from backend.models import BudgetBucket, Preferences, Recommendation, Relaxation
+from models import BudgetBucket, Preferences, Recommendation, Relaxation
 
 
 DEFAULT_DB_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "restaurants.sqlite"))

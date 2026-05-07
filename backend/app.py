@@ -8,9 +8,9 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from backend.models import Preferences, RecommendationsResponse, ResponseMetadata
-from backend.phase2_recommender import DEFAULT_DB_PATH, metadata_from_db
-from backend.phase4_service import RecommenderService, readiness
+from models import Preferences, RecommendationsResponse, ResponseMetadata
+from phase2_recommender import DEFAULT_DB_PATH, metadata_from_db
+from phase4_service import RecommenderService, readiness
 
 # Load environment variables for local development.
 # - By default loads from `.env` at repo root.
