@@ -33,7 +33,7 @@ def _first_query_value(query: Any, key: str) -> str | None:
 
 @st.cache_data(show_spinner=False)
 def get_metadata() -> Dict[str, Any]:
-    db_path = os.environ.get("RESTAURANTS_DB_PATH", DEFAULT_DB_PATH)
+    db_path = os.environ.get("RESTAURANTS_DB_PATH", "data/restaurants_demo.sqlite")
     return metadata_from_db(db_path=db_path)
 
 

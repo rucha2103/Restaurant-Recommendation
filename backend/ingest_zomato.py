@@ -325,7 +325,7 @@ def _quality_report(conn: sqlite3.Connection) -> Dict[str, Any]:
     }
 
 
-def ingest(db_path: str, split: str, dataset_revision: Optional[str]) -> Dict[str, Any]:
+def ingest(db_path: str, split: str, dataset_revision: Optional[str] = None, limit: Optional[int] = None) -> Dict[str, Any]:
     _configure_hf_cache()
     os.makedirs(os.path.dirname(db_path) or ".", exist_ok=True)
     conn = sqlite3.connect(db_path)
@@ -348,7 +348,9 @@ def ingest(db_path: str, split: str, dataset_revision: Optional[str]) -> Dict[st
 
         count = 0
         with conn:
-            for item in ds:
+            for i, item in enumerate(ds):
+                if limit and i >= limit:
+                    break
                 r = _canonicalize(dict(item))
                 if r is None:
                     continue
@@ -391,9 +393,15 @@ def main() -> None:
         default="data/quality_report.json",
         help="Path to write a JSON quality report",
     )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Limit number of restaurants to ingest (for demo purposes)",
+    )
     args = parser.parse_args()
 
-    result = ingest(db_path=args.db, split=args.split, dataset_revision=args.revision)
+    result = ingest(db_path=args.db, split=args.split, dataset_revision=args.revision, limit=args.limit)
     os.makedirs(os.path.dirname(args.report_out) or ".", exist_ok=True)
     with open(args.report_out, "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
