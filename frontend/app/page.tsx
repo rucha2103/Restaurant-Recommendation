@@ -656,11 +656,6 @@ export default function HomePage() {
         )}
       </div>
 
-      <style jsx>{`
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
-    </div>
+      </div>
   );
 }
