@@ -88,107 +88,199 @@ export default function HomePage() {
   };
 
   return (
-    <main className="container">
-      <h1>Palate Recommendations</h1>
-      <p className="muted">Next.js frontend on Vercel with Streamlit backend APIs.</p>
-
-      <form className="panel" onSubmit={onSubmit}>
-        <div className="grid">
-          <div>
-            <label htmlFor="location">Location</label>
-            <select id="location" value={location} onChange={(e) => setLocation(e.target.value)} required>
-              <option value="">Select a location</option>
-              {locations.map((item) => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="cuisine">Cuisine</label>
-            <select id="cuisine" value={cuisine} onChange={(e) => setCuisine(e.target.value)} required>
-              <option value="">Select a cuisine</option>
-              {cuisines.map((item) => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="budget">Budget</label>
-            <select id="budget" value={budget} onChange={(e) => setBudget(e.target.value)}>
-              <option value="low">low</option>
-              <option value="medium">medium</option>
-              <option value="high">high</option>
-            </select>
-          </div>
-          <div>
-            <label htmlFor="minimumRating">Minimum rating</label>
-            <input
-              id="minimumRating"
-              type="number"
-              min="0"
-              max="5"
-              step="0.1"
-              value={minimumRating}
-              onChange={(e) => setMinimumRating(e.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="topN">Top N</label>
-            <input id="topN" type="number" min="1" max="10" value={topN} onChange={(e) => setTopN(e.target.value)} />
-          </div>
-          <div>
-            <label htmlFor="includeUnrated">Include unrated</label>
-            <select
-              id="includeUnrated"
-              value={includeUnrated ? "true" : "false"}
-              onChange={(e) => setIncludeUnrated(e.target.value === "true")}
-            >
-              <option value="true">Yes</option>
-              <option value="false">No</option>
-            </select>
-          </div>
+    <>
+      {/* Hero Section */}
+      <section className="hero-section">
+        <div className="hero-content">
+          <h1 className="hero-title">🍽️ Palate</h1>
+          <p className="hero-subtitle">Discover Your Perfect Dining Experience</p>
+          <p className="hero-subtitle">AI-Powered Restaurant Recommendations Tailored Just for You</p>
         </div>
-
-        <div style={{ marginTop: "0.85rem" }}>
-          <label htmlFor="preferences">Additional preferences</label>
-          <textarea
-            id="preferences"
-            rows={3}
-            value={additionalPreferences}
-            onChange={(e) => setAdditionalPreferences(e.target.value)}
-          />
-        </div>
-
-        <div style={{ marginTop: "1rem" }}>
-          <button type="submit" disabled={loading}>
-            {loading ? "Loading..." : "Get Recommendations"}
-          </button>
-        </div>
-      </form>
-
-      {error ? <p className="error">{error}</p> : null}
-
-      <section className="results">
-        {summary ? <p className="muted">{summary}</p> : null}
-        {results.map((rec) => (
-          <article className="card" key={`${rec.name}-${rec.location}`}>
-            <h3 style={{ margin: 0 }}>{rec.name}</h3>
-            <p className="muted" style={{ marginTop: "0.35rem" }}>
-              {rec.location}
-            </p>
-            <p>{(rec.cuisines || []).join(", ")}</p>
-            <p>Rating: {rec.rating ?? "N/A"}</p>
-            <p>
-              Cost: {rec.estimated_cost != null ? `${rec.currency || "₹"}${rec.estimated_cost} for two` : "Unknown"}
-            </p>
-            {rec.why ? <p className="muted">{rec.why}</p> : null}
-          </article>
-        ))}
       </section>
-    </main>
+
+      {/* Form Section */}
+      <div className="container">
+        <div className="form-section">
+          <h2 className="form-title">Find Your Perfect Restaurant</h2>
+          <p className="form-subtitle">Tell us your preferences and let our AI recommend the best dining spots</p>
+          
+          <form onSubmit={onSubmit}>
+            <div className="form-grid">
+              <div className="form-group">
+                <label htmlFor="location" className="form-label">📍 Location</label>
+                <select 
+                  id="location" 
+                  className="select-field" 
+                  value={location} 
+                  onChange={(e) => setLocation(e.target.value)} 
+                  required
+                >
+                  <option value="">Select a location</option>
+                  {locations.map((item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="cuisine" className="form-label">🍜 Cuisine</label>
+                <select 
+                  id="cuisine" 
+                  className="select-field" 
+                  value={cuisine} 
+                  onChange={(e) => setCuisine(e.target.value)} 
+                  required
+                >
+                  <option value="">Select a cuisine</option>
+                  {cuisines.map((item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="budget" className="form-label">💰 Budget</label>
+                <select 
+                  id="budget" 
+                  className="select-field" 
+                  value={budget} 
+                  onChange={(e) => setBudget(e.target.value)}
+                >
+                  <option value="low">Budget Friendly</option>
+                  <option value="medium">Moderate</option>
+                  <option value="high">Fine Dining</option>
+                </select>
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="minimumRating" className="form-label">⭐ Minimum Rating</label>
+                <input
+                  id="minimumRating"
+                  className="input-field"
+                  type="number"
+                  min="0"
+                  max="5"
+                  step="0.1"
+                  value={minimumRating}
+                  onChange={(e) => setMinimumRating(e.target.value)}
+                  placeholder="3.5"
+                />
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="topN" className="form-label">🔢 Number of Recommendations</label>
+                <input 
+                  id="topN" 
+                  className="input-field" 
+                  type="number" 
+                  min="1" 
+                  max="10" 
+                  value={topN} 
+                  onChange={(e) => setTopN(e.target.value)} 
+                  placeholder="5"
+                />
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="includeUnrated" className="form-label">📊 Include Unrated</label>
+                <select
+                  id="includeUnrated"
+                  className="select-field"
+                  value={includeUnrated ? "true" : "false"}
+                  onChange={(e) => setIncludeUnrated(e.target.value === "true")}
+                >
+                  <option value="true">Yes, include hidden gems</option>
+                  <option value="false">No, only rated places</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="preferences" className="form-label">💭 Additional Preferences</label>
+              <textarea
+                id="preferences"
+                className="textarea-field"
+                rows={3}
+                value={additionalPreferences}
+                onChange={(e) => setAdditionalPreferences(e.target.value)}
+                placeholder="E.g., outdoor seating, vegetarian options, quiet atmosphere..."
+              />
+            </div>
+
+            <div style={{ textAlign: "center", marginTop: "2rem" }}>
+              <button type="submit" className="button-primary" disabled={loading}>
+                {loading ? (
+                  <>
+                    <span className="loading-spinner"></span>
+                    Finding Perfect Matches...
+                  </>
+                ) : (
+                  "🔍 Get Recommendations"
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {/* Error/Loading Messages */}
+        {error && (
+          <div className="error-message">
+            ⚠️ {error}
+          </div>
+        )}
+        
+        {loading && (
+          <div className="loading-message">
+            <span className="loading-spinner"></span>
+            Our AI is analyzing your preferences and finding the best restaurants...
+          </div>
+        )}
+
+        {/* Results Section */}
+        {results.length > 0 && (
+          <section className="results-section">
+            <div className="results-header">
+              <h2 className="results-title">🍽️ Recommended Restaurants</h2>
+              <p className="results-subtitle">
+                {summary || "Here are your personalized recommendations"}
+              </p>
+            </div>
+            
+            <div className="restaurant-grid">
+              {results.map((rec, index) => (
+                <article className="restaurant-card" key={`${rec.name}-${rec.location}-${index}`}>
+                  <h3 className="restaurant-name">{rec.name}</h3>
+                  <div className="restaurant-location">
+                    📍 {rec.location}
+                  </div>
+                  <div className="restaurant-cuisines">
+                    🍽️ {(rec.cuisines || []).join(" • ")}
+                  </div>
+                  
+                  <div className="restaurant-details">
+                    <div className="detail-item rating">
+                      ⭐ {rec.rating ? `${rec.rating}/5` : "Not Rated"}
+                    </div>
+                    <div className="detail-item cost">
+                      💰 {rec.estimated_cost != null ? `${rec.currency || "₹"}${rec.estimated_cost} for two` : "Price not available"}
+                    </div>
+                  </div>
+                  
+                  {rec.why && (
+                    <div className="restaurant-why">
+                      💡 <strong>Why we recommend:</strong> {rec.why}
+                    </div>
+                  )}
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+    </>
   );
 }
