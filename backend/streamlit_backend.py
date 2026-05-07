@@ -5,9 +5,9 @@ from typing import Any, Dict
 import streamlit as st
 from pydantic import ValidationError
 
-from backend.models import Preferences
-from backend.phase2_recommender import DEFAULT_DB_PATH, metadata_from_db
-from backend.phase4_service import RecommenderService
+from models import Preferences
+from phase2_recommender import DEFAULT_DB_PATH, metadata_from_db
+from phase4_service import RecommenderService
 
 
 def _to_dict(model_obj: Any) -> Dict[str, Any]:
