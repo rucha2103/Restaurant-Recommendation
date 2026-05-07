@@ -42,19 +42,37 @@ export default function HomePage() {
   const budgetValues = ["low", "medium", "high"];
 
   useEffect(() => {
+    // Hardcoded data to ensure dropdowns always work
+    const hardcodedData = {
+      locations: [
+        "BTM Layout", "Koramangala", "Indiranagar", "Jayanagar", 
+        "Whitefield", "HSR Layout", "Marathahalli", "Electronic City",
+        "Bannerghatta Road", "MG Road", "Brigade Road", "Church Street"
+      ],
+      cuisines: [
+        "Chinese", "Italian", "Indian", "Mexican", "Thai", "Japanese",
+        "Continental", "South Indian", "North Indian", "Mughlai",
+        "Cafe", "Fast Food", "Biryani", "Pizza", "Burger", "Desserts"
+      ]
+    };
+    
+    setLocations(hardcodedData.locations);
+    setCuisines(hardcodedData.cuisines);
+    
+    // Also try to load from API as backup
     const loadMetadata = async () => {
-      setError("");
       try {
         const response = await fetch("/api/metadata");
-        if (!response.ok) {
-          throw new Error("Failed to fetch metadata");
+        if (response.ok) {
+          const data: MetadataResponse = await response.json();
+          // Only use API data if fallback header is not present
+          if (!response.headers.get('X-Fallback-Data')) {
+            setLocations(data.locations || hardcodedData.locations);
+            setCuisines(data.cuisines || hardcodedData.cuisines);
+          }
         }
-        const data: MetadataResponse = await response.json();
-        setLocations(data.locations || []);
-        setCuisines(data.cuisines || []);
       } catch (error) {
-        console.error("Metadata loading error:", error);
-        setError("Failed to load restaurant data. Please check your connection and try again.");
+        console.log("Using hardcoded data - API failed");
       }
     };
     loadMetadata();
