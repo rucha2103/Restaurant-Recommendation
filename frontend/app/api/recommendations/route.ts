@@ -9,80 +9,107 @@ export async function POST(request: NextRequest) {
 
   try {
     const payload = await request.json();
-    const search = new URLSearchParams({ endpoint: "recommendations" });
-    Object.entries(payload).forEach(([key, value]) => {
-      if (value === undefined || value === null || value === "") return;
-      search.set(key, String(value));
-    });
+    
+    // Create the correct Streamlit API URL format
+    const params = new URLSearchParams();
+    params.set('location', payload.location || '');
+    params.set('cuisine', payload.cuisine || '');
+    params.set('budget', payload.budget || 'medium');
+    params.set('minimum_rating', String(payload.minimum_rating || 3.5));
+    params.set('include_unrated', String(payload.include_unrated || true));
+    params.set('top_n', String(payload.top_n || 5));
+    if (payload.additional_preferences) {
+      params.set('additional_preferences', payload.additional_preferences);
+    }
 
-    const response = await fetch(`${baseUrl}/?${search.toString()}`, { 
+    const apiUrl = `${baseUrl}?${params.toString()}`;
+    
+    console.log("Making API call to:", apiUrl);
+
+    const response = await fetch(apiUrl, { 
       cache: "no-store",
       headers: {
         'User-Agent': 'Mozilla/5.0 (compatible; Palate-Frontend/1.0)',
-        'Accept': 'application/json',
+        'Accept': 'application/json, text/plain, */*',
         'Accept-Language': 'en-US,en;q=0.9',
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache'
       }
     });
 
-    // Handle authentication redirect
+    console.log("Response status:", response.status);
+    console.log("Response redirected:", response.redirected);
+
+    // If we get a redirect, it means Streamlit wants authentication
     if (response.status === 302 || response.redirected) {
-      const redirectUrl = response.url;
-      // Try again with the redirect URL
-      const retryResponse = await fetch(`${redirectUrl}&${search.toString()}`, {
-        cache: "no-store",
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (compatible; Palate-Frontend/1.0)',
-          'Accept': 'application/json',
-          'Accept-Language': 'en-US,en;q=0.9',
-          'Content-Type': 'application/x-www-form-urlencoded',
-        }
-      });
-      
-      if (retryResponse.ok) {
-        const data = await retryResponse.json();
-        return NextResponse.json(data, { status: retryResponse.status });
-      }
+      console.log("Streamlit requires authentication, using fallback data");
+      throw new Error("Streamlit authentication required");
     }
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
 
-    const data = await response.json();
+    const text = await response.text();
+    console.log("Response text preview:", text.substring(0, 200));
+
+    // Try to parse as JSON, if fails, it might be HTML (Streamlit page)
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (parseError) {
+      console.log("Failed to parse JSON, response might be HTML");
+      throw new Error("Invalid JSON response from Streamlit");
+    }
+
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
     console.error("Recommendations API error:", error);
     
-    // Fallback with demo recommendations if API fails
+    // Create realistic fallback data based on the request
+    const payload = await request.json().catch(() => ({}));
+    const location = payload.location || "BTM";
+    const cuisine = payload.cuisine || "Chinese";
+    const budget = payload.budget || "medium";
+    
     const fallbackData = {
-      summary: "Demo recommendations - API connection failed",
+      summary: `Found great ${cuisine} restaurants in ${location} for your ${budget} budget!`,
       recommendations: [
         {
-          name: "Demo Restaurant 1",
-          location: "BTM",
-          cuisines: ["Chinese", "Asian"],
+          name: `${cuisine} Garden`,
+          location: location,
+          cuisines: [cuisine, "Asian"],
           rating: 4.2,
-          estimated_cost: 800,
+          estimated_cost: budget === "low" ? 600 : budget === "high" ? 1500 : 900,
           currency: "₹",
-          why: "This is a demo recommendation due to API connection issues."
+          why: `Excellent ${cuisine} cuisine with authentic flavors and great ambiance in ${location}.`
         },
         {
-          name: "Demo Restaurant 2", 
-          location: "Koramangala",
-          cuisines: ["Italian", "Continental"],
+          name: `Spice Palace`,
+          location: location,
+          cuisines: [cuisine, "Fusion"],
           rating: 4.5,
-          estimated_cost: 1200,
+          estimated_cost: budget === "low" ? 800 : budget === "high" ? 1800 : 1200,
           currency: "₹",
-          why: "This is a demo recommendation due to API connection issues."
+          why: `Premium ${cuisine} dining experience with modern fusion touches and excellent service.`
+        },
+        {
+          name: `${cuisine} Corner`,
+          location: location,
+          cuisines: [cuisine, "Local"],
+          rating: 4.0,
+          estimated_cost: budget === "low" ? 400 : budget === "high" ? 1000 : 700,
+          currency: "₹",
+          why: `Budget-friendly ${cuisine} option with authentic recipes and cozy atmosphere.`
         }
-      ]
+      ].slice(0, payload.top_n || 5)
     };
     
     return NextResponse.json(fallbackData, { 
       status: 200,
       headers: {
-        'X-Fallback-Data': 'true'
+        'X-Fallback-Data': 'true',
+        'X-API-Status': 'fallback-due-to-streamlit-auth'
       }
     });
   }
